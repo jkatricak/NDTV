@@ -1,0 +1,331 @@
+February 5, 2003
+
+Reformatted and reinstalled Linux RedHat 8.0 on primary machine:
+
+100 GB Drive is mounted as /ndtv
+also allotted 2 GB swap space
+
+root password: 1TBporn
+
+user: ndtv
+pass: ndtv03
+
+-----
+
+Tried installing gatos drivers (http://gatos.sourceforge.net/) and related prgrams to get TV tuner to work:
+
+backup /user/X11R6 to /usr/X11R6backup.tar
+
+install:
+downloaded in this order (installed in reverse):
+
+ATI.2 drivers (gatos)
+drm-kernel
+AView
+dkm
+FFmpeg
+lame (mp3 encoder)
+TCL
+TK
+ALSA (Audio) - lib only
+
+experienced some problems with dkm and above.
+
+saw some TV signal on xawtv but it was very fuzzy and we lost it quickly and couldn't get it back.
+
+decided to get stable WinTV card
+
+----
+
+2/18/03
+Preparing second maching:
+ -removed MyHD card
+ -added WinTV card
+ -removed old graphics card
+ -added Radeon 8500 card
+
+configuration:
+-Installing RedHat 8.0
+ -with SQL, python, and other necessary options
+ -/boot 100MB, swap 2070MB, / rest of small hard drive, /ndtv all of 150GB HD
+ -checked for bad blocks (took several hours to complete)
+ -used same accounts as first machine
+
+Installed MPlayer on first machine
+-source located in /ndtv/players
+-added win32 codecs in compilation
+-some recompilation may be necessary to include correct fonts and maybe some more codecs
+
+during installation, wireless keyboard crapped out.
+currently using standard keyboard, will attempt to get wireless working again
+
+Test MPlayer
+-inserted Twister DVD:
+# mplayer -dvd 1 -dvd-device /dev/cdrom -fs
+   -will play the dvd from the beginning, full screen
+# mplayer -tv on:driver=v4l:width=640:height=480:channel=16:norm=NTSC -fs
+   -will play channel 16 full screen
+-use "q" or "esc" to exit (don't just close windows if not full screen because audio will continue
+-strange things happen when i try to change the channel.  it appears that it's not taking the correct input.  currently, it display whatever channel was last viewed on xawtv:
+
+this makes tv work for xawtv:
+# xawtv -device /dev/video0
+
+-here appears to be a more robust command line to start TV (this works when channging channels):
+# mplayer -tv on:driver=v4l:width=640:height=480:channel=57:norm=NTSC:chanlist=us-bcast -fs
+
+SIMPLE SCRIPTS
+-Final task, make some simple scripts to enable quick playback:
+  -To play DVD type:
+# ndtv_dvd
+  -To play TV type:
+# ndtv_tv <CHANNEL NUMBER>
+
+
+
+---------
+
+
+2/25/03
+
+Connected Computers to TVs
+ -decided to simply intercept signal to monitor, so whatever is on monitor is displayed on TV
+ -could be changed in the future using cords that came with video card
+ -had to change a lot of dip switches for proper HDTV configuration
+ -computer must be on 640x480 to work
+ -currently, picture is stretched (because monitor and TV's have different aspect ratios)
+ -we think that getting hub working on 4x3 ratio is main goal now, so widescreen issue does not have high priority right now
+
+Recording from DVD
+ -used 2 pass DIVX technique to encode to an .avi file
+ -wrote a script to automate and robustisize the function
+ -script name: ndtv_encoder <title> <filename>
+ -tried copying straight to file, was faster (less encoding) but was about 4 times larger with our test data.  we will discuss this issue at the next meeting
+ -twister really rocks hard
+
+Recording from TV
+ -explored recording options from tv using mencoder
+ -wrote a script to automate and robustisize the function
+ -script name: ndtv_tv_rec <channel> <length in seconds> <filename>
+
+Problems with audio
+ -the audio no longer plays when the tv tuner is used
+ -explored many many many options and configurations and couldn't get audio to play or record
+   -aumix
+   -"-ao" "forceaudio" "forcechan" and many more options in mplayer
+ -discovered that audio is coming out of tv-card, but the loop back to the sound card doesn't work
+ -must explore sound card configuration more
+ -it was working well before jenn and chris started hacking on our machine
+
+Other Tidbits of Goodness
+ -lab is now vacuumed
+ -ATI.2 Gatos drivers installed and (after crashing completely) working
+ -Jim took a short break to vomit his brains out.  He came back to work feeling much better.
+
+
+----------
+
+3/3/03
+
+Solved audio problem
+ -The inputs for the C-Media device (when it is in stereo) is as follows:
+  1. stereo line out
+  2. line in
+  3. mic in
+  we had the tv's audio plugged into the mic and that is why it was giving us problems.  Now, the TV plays and records audio perfectly.
+
+Making scripts more robust
+  -Added South Bend channels to ndtv_tv script.  Note: now the channel numbers are by their position on the list, so channel 1 is NBC, 2 is CBS, etc.  The record script, however, still uses absolute channel mapping.  I also added the font library to mplayer so that the channel caption is listed at the top.
+  -Sound Recording:  Working on disabling the sound output when recording.  Otherwise, the audio plays when doing any recording.  This is an inconvenience issue, but appears more complex than I originally thought.
+  -Currently, script mutes sound as it records so that it is not played through the speakers.  Still working on way to disable sound output while still recording sound
+
+Compression:
+  -Added MPEG5 (DIVX 5) compression to TV recording.  Recorded an hour of channel 16, which takes up 874 MB.  I will check with the group to see if this is an appropriate file size for one hour of TV.  The quality is definately reduced, so maybe we should look into other compression.
+
+--------------
+
+March 12, 2003
+
+tried using tv tuner and mplayer to listen to radio.
+worked, but mplayer wanted to display video image (mplayer has no radio
+tuner options so i just put 92.9 (U93) in as the frequency and it worked.
+
+mplayer -tv
+on:driver=v4l:width=640:height=480:norm=PAL:chanlist=us-bcast:freq=92.7
+-fs -brightness -100
+
+there's a command line that works
+
+tried looking for radio tuners on the internet
+found a program and installed it
+
+do a `man` on "setuner" and "tunerd"
+got the radio playing with it but now it won't turn off and the device is
+locked.
+
+---------------
+
+March 23, 2003
+
+downloaded rtune from ftp://ftp.leb.net/pub/blinux
+because there was no way to mute the radio without muting the volume
+
+compiled and installed a simple program called "rtune"
+allows for mute
+also noticed that tuner must be muted after finished because will play along wit
+h mplayer (both audio tracks heard)
+wrote scripts for radio manipulation:
+ndtv_radio_on
+ndtv_radio_off
+ndtv_radio_set <station_in_kilohertz>
+
+installed mp3Record:
+http://www.bluedogtek.com/modules.php?name=Downloads&d_op=viewdownloaddetails&li
+d=2&ttitle=mp3Record
+
+appears to be a script that we can change to out advantage
+
+it uses this line to record:
+sox -r $strFreqRate -t ossdsp -w -s /dev/dsp -t raw -c 2 - \
+| lame -s 48 -x -b $strBitRate -m s - $strFileName
+
+I used freq of 48000, bitrate of 192
+
+---------------
+March 24, 2003
+
+Manipulated mp3Record and called modified version ndtv_mp3record
+Simplified the script and took out user interaction
+
+ndtv_mp3record usage:
+#ndtv_mp3record  (default: filename is record-DATE&TIME.mp3 and recording ends when enter is pressed)
+#ndtv_mp3record <filename>  (recording still waits for enter)
+#ndtv_mp3record <filename> <time_seconds>  (total control of filename and time)
+
+wrote a script to record radio using the radio on/off/set scripts and the mp3record script
+
+ndtv_radio_rec usage:
+#ndtv_radio_rec <frequency_kHz> <time_sec> <mp3_filename>
+
+chose 192 bitrate and increased gain to match input volume
+still sounds different from actual input, but probably due to mp3 format
+also, forced the highest amount of quality processing, which uses about 11% CPU
+
+
+#ndtv_radio_rec <station> <time> <filename>
+
+------------------
+April 2, 2003
+
+Installed FVWM on RLS
+did command line login
+and installed fvwm
+
+
+-----------------
+April 7, 2003
+
+Installed FVWM on PJF
+setup script so chris could use gnome
+worked on .fvwm2rc file so minimal colors in use, minimal GUI crap
+used black and white colors, shortened menus, made so TV loads at startup
+
+ndtv stuff has no title and no borders
+
+need to work on:
+-autologin
+-compression qualities
+
+-----------------
+April 15, 2003
+
+System now:
+ -logs in as ndtv automatically
+ -starts fvwm automatically as well as initializes sound card
+ -starts TV as soon as fvwm starts
+
+Here are the modifications made in order to do this:
+In /etc/inittab:
+ (runlevel 3):
+id:3:initdefault:
+ (to autologin):
+1:2345:respawn:/sbin/agetty -n -l /usr/local/sbin/autologinndtv 38400 tty1
+
+In /usr/X11R6/bin/startx:
+comment out lines dealing with arguements.  This allows arguments to be sent to xinit
+
+In $HOME/.xinitrc:
+if [ $1 = "fvwm" ]; then
+   [ -x /usr/bin/ssh-agent -a -z "$SSH_AGENT_PID" ] && \
+        exec ssh-agent $HOME/.Xclients-fvwm || \
+        exec $HOME/.Xclients-fvwm
+elif [ $1 = "gnome" ]; then
+   [ -x /usr/bin/ssh-agent -a -z "$SSH_AGENT_PID" ] && \
+        exec ssh-agent $HOME/.Xclients-gnome || \
+        exec $HOME/.Xclients-gnome
+
+In $HOME/.bashrc:
+if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty1 ]; then
+  aumix -q
+  startx fvwm
+fi
+
+In $HOME/.fvwm/.fvwm2rc:
+AddToFunc InitFunction
++ I exec xsetroot -mod 2 2 -fg black -bg black
++ I exec /ndtv/scripts/ndtv_tv
+
+Style tk          NoTitle, NoHandles, Sticky
+
+
+
+id:3:initdefault:
+
+------------------
+
+April 19 2003
+
+Tried to see if ATI video outputs would work instead of converting monitor signal to HDTV signal as we have been doing.  Turns out ATI has little to no support for TV-out on linux and the search is futile.  Recommendation: buy a different brand video card that supports video-out in linux if no hi-tech tv is available.
+
+-------------------
+
+April 23 2003
+
+found some internet radio sites to implement into design.
+simple script to execute them just calls "mplayer http://...."
+
+tried to get WVFI to work (notre dame's online radio station)
+WVFI is encoded with realplayer encoding, so i reinstalled mplayer with realplayer codecs.  WVFI, after much work, never worked because either the realplayer codecs are incomplete or the server requires more proprietary authentication for online playing
+
+
+--------------------
+
+April 28, 2003
+
+Recorded DVD "Twister"
+Explored encription technique and looked for way to allow better quality.
+
+Also tried to fix audio-video latency with TV.  Solution would be to pre-record tv and then play from file, which is possible but more difficult.  It would also solve the "record live TV" problem.
+
+--------------------
+
+May 1, 2003
+
+Got remote to mostly work with key binding, program execution, and mplayer function binding.  See ".lircrc" for details
+
+--------------------
+
+May 2, 2003
+
+Demonstration
+
+-------------------
+
+May 3, 2003
+
+Everything listed in this log is compiled and zipped together in Hardware.tar.gz
+
+Tony Hagale recommended this site for a more adaptable GUI interface:
+http://www.dvhart.com/projects.php
+
+So long, and thanks for all the fish

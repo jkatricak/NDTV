@@ -1,0 +1,31 @@
+from Tkinter import *
+
+import Image, ImageTk
+import glob
+def new(self): return self
+
+
+root = Tk()
+root.title("Thumbnails")
+
+
+key = glob.glob('thumb*.jpg')
+count = 0;
+
+
+newimage = new 
+
+for i in key:
+   
+    pic = Image.open(key[count])
+    newimage[count] = ImageTk.PhotoImage(pic)
+    ##self.newimage = newimage;
+    but = new(Button(root,image=newimage[count]))
+    lab = new(Label(root, text=i))
+    but.pack();
+    lab.pack()
+    count = count+1
+
+
+
+root.mainloop()

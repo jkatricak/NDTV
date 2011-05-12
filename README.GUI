@@ -1,0 +1,9 @@
+The Main program run is in GUI/master/main.py
+
+Individual Modules that are used by main (like the program guide) are located in /GUI/functions/theirname
+
+Be careful because some modules may require global paths to find files and modules.
+
+All GUI code is written in Python.  For more information on modules we had to load to get python to do what we want (such as TKINTER) take a look at the log.tar file in the /GUI directory for detailed information on everything we did.  
+
+Have FUN!!!

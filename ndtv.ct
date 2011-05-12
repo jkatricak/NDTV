@@ -1,0 +1,2 @@
+5 0 * * * $HOME/DBgroup/ndupdate.pl >> ndup.log
+15 0 * * * $HOME/DBgroup/fileexist.pl >> file_DNE.err

@@ -1,0 +1,20 @@
+Contains:
+ati  fonts  fvwm-2.4.15.tar.gz  players  recorders  scripts  system_files
+
+ati: installation files for ati video card including some other files for tv to work
+fonts: fonts for mplayer
+fvwm...: fvwm window manager
+players: mplayer, rtune
+recorders: mp3record, mpegrec
+scripts: all scripts to record and play audio and video
+system_files: random system files:
+	autologinndtv
+	autologinndtv.c
+	backup.bashrc
+	backup.fvwm2rc
+	backup.lircrc
+	inittab
+	README.system
+	startx
+	XF86Config
+

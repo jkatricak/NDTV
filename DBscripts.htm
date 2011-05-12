@@ -1,0 +1,216 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 10 (filtered)">
+<title>In every script where channel is called, use the channel id that xmltv
+gives (i</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>In every script where
+channel is called, use the channel id that xmltv gives (i.e. 16 WNDU)</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>cancel_rec.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: cancel_rec.pl
+starttime channel</span></p>
+
+<p class=MsoNormal><i><span style='font-family:Verdana'>This script will cancel
+a scheduled recording. It removes it from the torecord database and cancels the
+at job scheduled to record it.</span></i></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>chanlogo.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: chanlogo.pl file.xml</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script parses through
+only the &lt;channel&gt; tags of an xmltv file and populates the channel
+database. It gets the channel logo and parses out the actual channel number
+form the id.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script is run by
+ndupdate.pl and as of right now shouldn’t be called independently.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>fileexist.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage fileexist.pl</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script goes through
+the picture,audio,video and recordedtv databases and checks to make sure each
+file exists. If not, it prints an error message.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script is run as a cron
+job at </span><span style='font-family:Verdana'>12:30 AM</span><span
+style='font-family:Verdana'> and as of right now shouldn’t be called
+independently.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>musicin.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: musicin.pl
+file.mp3</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script takes an mp3
+file, gets all of the info from the ID3 tag as well as technical info (length, bitrate,etc)
+and inserts it into the audio database.  </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>ndtvdb_nodrop.sql</span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This SQL file sets up the
+databases for use in the ndtv project.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>ndupdate.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: ndupdate.pl</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This file performs a
+number of daily chores. It fetches xmltv listings for the next 7 days, enters
+all of those listings into the programme database and then deletes old listings
+up until the past day. It also updates the channel database if necessary and runs
+the seasonpass maintenance script. This script is run every night at </span><span style='font-family:Verdana'>12:30 AM</span><span style='font-family:Verdana'> as a cron
+job and shouldn’t be run independently as of right now.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>record_tv_execute.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage:
+record_tv_execute.pl starttime channel</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script actually
+executes the entire recording process and moves the useful information from the
+torecord database to the recordedtv database. This script should not be run
+independently. It is set up by record_tv_init.pl which should be used for all
+recording.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>record_tv_init.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage:
+record_tv_int.pl starttime channel [0 or 1]</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script sets up a tv
+show to be recorded. It puts the relevant information from programme into torecord
+and sets up an at job for the recording. It also checks to see if there are any
+conflicts when a program is set to record. If a conflict occurs, the channel, starttime
+and endtime of both programs are displayed to standard out. To record the new
+show, cal record_tv_init with a third argument of 1 (i.e. “record_tv_init.pl starttime
+channel 1”). If you want to keep the old recording, then don’t run the script
+again, or run it with a third argument of 0. Use this script for all tv
+recording.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>ripit.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: ripit.pl [1 2
+3 …]</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script will rip a CD
+to mp3 and enter all of the information into the audio database. It prompts to
+verify all of the information for the CD. If you only want to rip certain
+tracks enter them space separated as arguments.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>seasonpass.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: seasonpass.pl</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script gets the title
+and weekly start time from a database called seasonpass. It goes through the programme
+database and gets every entry that occurs in the future at the same time of day
+(i.e. Macgyver at 12 Noon every day will be recorded at 12 noon everyday,
+whereas if we choose the friends episode at 8 on Thursdays, only the episodes
+that occur at 8 PM will be recorded)</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>xml2sql.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: xml2sql.pl file.xml</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script goes through
+the xmltv file and parses out all relevant information and puts it into the programme and phour
+database. This is automatically called by ndupdate.pl and shouldn’t be used
+independently.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>seasonpass_add.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: seasonpass_add.pl starttime channel</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script sets up a
+season pass for a show.  </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>seasonpass_remove.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: seasonpass_remove.pl timeofday channel title</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>This script removes the
+season pass for a show. timeofday can be taken from the seasonpass table in
+the database or truncate the starttime. the format is just
+hours/minutes/seconds - so 203000 would be 8:30 PM </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;font-family:Arial'>cleanup.pl addkeep.pl rmkeep.pl</span></b></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>usage: cleanup.pl usage: addkeep.pl starttime channel usage: rmkeep.pl starttime channel</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana'>These scripts facilitate the cleaning of the database. Based on a variable in cleanup.pl whenever the size of /ndtv/movies/ is greater than the specified size, the script will remove files from /ndtv/movies and those files' information from the databases starting with the oldest show in the database. The other two scripts flag a show to be kept or not kept (i.e. if you want to keep an episode of Macgyver forever, you run addkeep.pl starttime channel and the cleanup script will never delete that file. If you have a change of heart, you can run rmkeep starttime channel to allow that show to be deleted again. 
+ </span></p>
+
+
+
+</body>
+
+</html>

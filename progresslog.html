@@ -1,0 +1,393 @@
+<html><head><title>NDTiVo: Database Log</title></head>
+<body>
+<h1>NDTiVo: The Database Group</h1>
+<h2>Frank Irving & John Katricak</h2>
+<br />
+
+<p><b>01.21.2003</b><br />
+<ul>
+<li>Recommending MySQL for the database</li>
+<li>Downloaded xmltv-0.5.6.tar.bz2 from http://www.sourceforge.net/projects/xmltv.</li>
+<li>Needed to set LANG environmental variable to en_US: export LANG="en_US"</li>
+<li>Ran perl Makefile.pl with the following options:
+	<ul>
+	<li>tv_check? NO</li>
+	<li>tv_pick_cgi? NO</li>
+	<li>tv_grab_na? YES</li>
+	</ul></li>
+<li>The following perl modules were needed but not present: XML::Twig, XML::Writer, Compress::Zlib, Lingua::EN::Numbers::Ordinate, Lingua::Preferred, Term::ProgressBar, Unicode::String.  All were downloaded and installed except Lingua::Preferred and Term::ProgressBar, which were not required.</li>
+<li>make ; make test ; make install</li>
+<li>Ran tv_grab_na --configure as per docs/Quickstart to configure xmltv for local broadcast in the 46556 zip code.</li>
+</ul></p>
+
+<p><b>1.22.2003</b><br />
+<ul>
+<li>Reinstalled xmltv with tv_check and tv_pick_cgi, which should aid in finding and scheduling specific programs.
+	<ul>
+	<li>tv_check required Tk, Tk::TableMatrix, and XML::Simple, which were 	downloaded and installed.</li>
+	</ul></li>
+<li>Downloaded and installed id3ed, a program that reads and displays ID3 tag information from mp3s.</li>
+</ul></p>
+
+<p><b>1.28.2003</b><br />
+<ul>
+<li>Published this log for the first time in John's AFS space</li>
+<li>Moved to ~ndtv/Database on 1.29</li>
+</ul></p>
+
+<p><b>1.31.2003</b><br />
+<ul>
+<li>Reinstalled xmltv and id3ed after linux was reinstalled.</li>
+<li>Obtained MySQL from CD, copied to ~ndtv/Software.</li>
+<li>Installed mysql-3.23.52.
+	<ul><li>./configure --prefix=/usr/local/mysql</li></ul></li>
+<li>Created "music", "movies", and "pictures" table in database "ndtv".</li>
+<li><a href="tables.txt">Current table layout of database.</a></li>
+<li>Perl will be used to interact with the database.</li>
+</ul></p>
+
+<p><b>02.04.2003</b><br />
+<ul>
+<li>Installed Perl DBI (DBI-1.18.tar.gz) and DBD (Msql-Mysql-modules-1.2216.tar.gzip) from mysql.com.  DBD install options:
+	<ul>
+	<li>Install which drivers? MySQL</li>
+	<li>Install MysqlPerl emulation? no (default)</li>
+	</ul>
+Also created several simple test programs in perl.</li>
+<li>Determined primary keys for each table.  For music, movies, and picutures,
+"filename" will be the key.  For offlinedvds, "title" is set as primary
+key, although that may change.  For the tv table, some combination of
+"title", "channel", and "starttime" will be used.</li>
+</ul></p>
+
+<p><b>02.05.2003</b><br />
+<ul>
+<li>Created perl program to parse xmltv file and add to database.</li>
+<li>Set up "programme" table for xml.</li>
+<li>Installed Image::Size, MP3:ID3v1Tag, and MPEG::ID3v2Tag perl modules,
+although we will probably only use Image::Size.</li>
+<li>Installed mysqlcc, a gui for MySql.</li>
+<li>Installed several perl modules for CDDB and IMDB, usefulness TBD.</li>
+</ul>
+
+<p><b>02.07.2003</b><br />
+<ul>
+<li>Made several tweaks to the database:
+	<ul>
+	<li>Reorganized to audio, video, programme, and picture tables.</li>
+	<li>Added "online" field to audio and video to indicate if file
+	is stored on the system.</li>
+	<li>Added "format" field to the same two tables - should help
+	when choosing playback device.</li>
+	<li>Added "record" field to programme table to determine if the
+	program should be recorded.</li>
+	</ul></li>
+</ul></p>
+
+<p><b>02.10.2003</b><br />
+<ul>
+<li>Downloaded perl program that rips CD's and creates mp3 files.</li>
+<li>Modified musicin.pl (add music file to database) with new MP3 perl
+module.</li>
+</ul></p> 
+
+<p><b>02.17.2003</b><br />
+<ul>
+<li>Created a generic database accessing perl script - accessdb.pl</li>
+<li>Created script to check if files listed in database actually exist -
+fileexist.pl.  Still a work in progress.</li>
+<li>Finally (hopefully) figured out how to start mysqld when machine is
+powered on or rebooted.  The script mysql is located in /etc/init.d and runs
+"/usr/local/mysql/bin/safe_mysqld --user=root"</li>
+<li> Integrated ripit.pl and musicin.pl to allow for ripping of a CD, grabbing
+CDDB info and inserting into music database with one command </li>
+
+</ul></p>
+
+<p><b>02.19.2003</b><br />
+<ul>
+<li> Created crontab to run fileexist.pl (does file exist?) daily.</li>
+<li> wrote ndupdate.pl which cleans out database (keeps shows from 2 days
+earlier right now) and updates for the next week (7 days). </li>
+</ul></p>
+
+<p><b>02.23.2003</b><br />
+<ul>
+<li> Fixed ndupdate.pl to actually work. One output file for all 7 days. <br> 
+It's looking like ndupdate is going to be the main script run every night.
+</li>
+<li> New databases. Take a look <a href="newtables.txt"> Here </a>
+</li>
+<li> Wrote chanlogo.pl which parses only the channel tags of the sorted xml
+<br> and fills he channel database. I've been using REPLACE INTO table SET ""
+<br> so it will replace a record if it exists.
+</li>
+</ul></p>
+
+<p><b>02.25.2003</b><br />
+<ul>
+<li>Wrote script (dbmove.pl) to move record from programme to torecord db.<br />
+Unsure as to how to set up arguments... right now it is perl dbmove.pl<br />
+starttime channel (and for reference the channel is the channel id from xmltv
+<br />
+i.e. 6 WSJV. This can be changed to any of the fields in the channel db if <br
+/>
+need be) I think that's the best way to do it, but suggestions welcome.</li>
+<li>record_tv_init.pl (which later uses record_tv_execute.pl) is set up to tentatively record programs using starttime and channel as command-line input.  at runs a script that runs mencoder for a specified amount of time determined from starttime and endtime.</li>
+</ul>
+<i><b> Interesting problem/situation: zap2it does not provide end at times
+anymore... only starttimes. tv_sort can guess endtimes from the next scheduled
+recording, but when we get to the 7 day limit we don't know when the next show
+starts, so it comes up as undefined error in perl. This problem only affects
+the absolute last show of each grabbing period for each chanel (so if x
+channels then x errors). Possible Solution is to
+actually grab 8 days and only show 7 days or only put 7 days into the database.
+This seems somewhat wasteful. Another option is to simply disallow the
+recording of the shows with no end times and say to user to wait until more
+information is known (should eb the next day).
+</b></i></p>
+<p><b>03.04.2003</b><br />
+<ul>
+<li>Changed crontab to run ndupdate and fileexist as ndtv. This should fix the
+update problem. Seems we didn't have permission to work with the xml
+files.</li>
+<li> Updated record_tv_init. A couple of problems with the time standards and
+at. It didn't want to run on any other day than today, but I intimidated it
+with some format changes and it changed it's mind. Also fixed the channel
+getting loop. Don't know when that went wrong, it was working before.
+</li>
+<li>
+Working on a record_now script, but had to quit due to hunger/starvation. Will
+continue working on it later, once I realize studying for CG is futile. 
+</li>
+<li>Started work on cancel_rec, which of course would cancel a recording job
+from the queue.</li> 
+</ul>
+<p>
+<b><i> Another note: When recording, it looks like we're taking about 50%
+CPU. We have to get compression soon. We're going at 20 MB/sec, so a half hour
+is something like 18 GB</i> (update/note: Charlie claims to have added
+compression to take an hour show down to about 700 MB.)</b>
+<p><b>03.06.2003</b><br />
+<ul>
+<li>Updated fileexist check recordedtv table as well.  Also rewrote the script
+since general purpose accessdb script somehow got deleted.</li>
+<li>Changed updatedb to get 8 days of listing.  This includes today up to and
+including a week from today.</li>
+<li>Set up preliminary fall break recording schedule:
+        <ul>
+	<li>The Price is Right, daily</li>
+	<li>Blind Date, Tuesday</li>
+	<li>Ed, Wednesday</li>
+	<li>ER, Thursday</li>
+	</ul>
+</li></ul></p>
+<p><b>03.18.2003</b><br />
+<ul>
+<li>Set up Season Pass functionality
+        <ul>
+	<li>Created table seasonpass with title, channel, and timeofday.
+	For now, season pass entries will have to be made manually.</li>
+	<li>Created seasonpass.pl, a script that is called daily in ndupdate.
+	It looks as seasonpass, then compares those entries with programme.
+	Any matches are sent to record_tv_init.pl.  Since this is run daily
+	(through ndupdate.pl), duplicates and conflicts do occure.  For now,
+	seasonpass assumes that the new seasonpass requests will override
+	any previous torecord requests.</li></ul></li>
+<li>Modified record_tv_init.pl to handle conflict resolution.  When it is
+called, it uses a series of if statements to compare the new recording
+request's start/end times with torecord.  For now, if a conflict occurs,
+record_tv_init.pl outputs an error; otherwise, it outputs a successful run.
+</li>
+<li> As per Chris' request on his log, added a table that stores the starttime
+as hour from the beginning of the year, as well as minute (since hour won't
+work right for many shows. The table name is phour and is in our table
+description listed next. </li>
+<li><a href="tables0318.txt">Table Update</a></li>
+<li><a href="DBscripts.htm">Script Descriptions</a></li>
+</ul></p>
+<p><b>03.25.2003</b><br />
+<ul>
+<li>Implemented Program Guide updates (progupdate.pl, runs daily through
+ndupdate).
+	<ul>
+	<li>Looks for exact matches in torecord and programme
+	(ignoring starttime, endtime, and atjobno).</li>
+	<li>If starttimes/endtimes differ, the old job is deleted from
+	torecord and a new job is created.</li>
+	<li>"The Price is Right Rule": Many shows occur multiple times
+	a week with the exact same information, such as The Price is Right.
+	Therefore, to avoid overwrites, progupdate will only update if
+	exactly one match is found (indicating most likely a weekly program
+	whose time has changed just for that week).</li>
+	</ul></li>
+</ul></p>
+<p><b>03.31.2003</b><br />
+<ul>
+<li>Installed gphoto2 for interfacing with digital cameras and ran some
+tests to understand its functionality.</li>
+</ul></p>
+<p><b>04.01.2003</b><br />
+<ul>
+<li>Incorporated scheduling recording and deleting schedule recordings
+into the GUI program guide (see ~/GUI/program/kanka/program.py).
+Still need to:
+        <ul>
+	<li>Update color change of text.</li>
+	<li>Update buttons on program information screen.</li>
+	<li>Season Pass functionality</li></ul></li>
+</ul></p>
+
+<p><b>04.02.2003</b><br />
+<ul>
+<li> Wrote python script to take thumbnails from digital camera and display
+them on the screen. When the image is clicked the full size picture is saved
+to te hard drive.</li>
+<li>Added "Tune TV Now" function to program guide.  This option comes up
+when the user is looking at the details of a program.  When selected, ndtv_tv
+is run using the channel of the program as the current channel.  Possible
+expansion of this feature is an option to tune to the channel immediately,
+or tune/change channel when the selected show starts (this is how most
+program guide do things).</li>
+</ul>
+
+<p><b>04.05.2003</b><br />
+<ul>
+<li>Fixed "Tune TV Now" and added it to Chris's latest version of program.py.
+Now, there is an if statement that converts the channel names to the
+appropriate numbers used by the ndtv_tv script.  The latest version is located
+in ~ndtv/GUI/program/kanka/.</li>
+<li>When mplayer (TV) quits, the program guide only regains focus if the mouse
+pointer is located on the guide.  We should wait to see what happens in FVWM
+before starting to fix this problem.</li>
+<li>In program.py, houroffset was set to 72, which set the date 3 days in the
+future when the program guide starts.  This is set to 0 in the version in the
+kanka directory.</li>
+<li>Added "46 WHME" to the list of channels in ndtv_tv because channel 46
+is listed in the program guide.</li>
+<li>Edited readsetup.py to allow it to run system commands.
+(~/GUI/GUItest/kanka/)
+     <ul>
+     <li>Commands in the .setup file had a format like
+     "Left: goto newpage.setup".  Now, when a system command needs to be run,
+     the format is "Enter: do command.pl".  If readsetup.py sees the "do", it
+     knows to call os.system() to run the command.</li>
+     <li>Before, the "other:" line sent the user to an "Unknown Command" page.
+     Now, it redraws the current screen.  So, if an invalid command is
+     pressed, nothing happens.  This format also allows the user to return to
+     their last menu after a command they ran is completed.</li>
+     <li>Unfortunately, this doesn't work for command line arguments yet.</li>
+     <li><b>Note:</b>The way things are set up now, all scripts <u>must</u>
+     be executable to work properly.  To do this:
+          <ul>
+	  <li>Python: on the top line, add #!/usr/bin/python</li>
+	  <li>Perl: on the top line, add #!/usr/bin/perl -w</li>
+	  <li>After that, for both: chmod +x scriptfilename</li></ul></ul></li>
+<li>Downloaded and installed CDDB_get and dagrab for ripit.pl, which rips
+mp3s from CDs.  CD ripping is now complete (including adding files to the
+database, except for the GUI part.</li>
+<li>See below for latest status of GUI menus (version located in
+~ndtv/GUI/GUItest/kanka/).</li>
+</ul></p>
+
+<p><b>04.06.2003</b></p>
+<ul>
+<li>Time change!  Updated Season Pass table accordingly.</li>
+<li>Adjusted readsetup.py to allow for commands with up to 3 arguments,
+although that number is easily changed. Once again, see ~GUI/GUItest/kanka</li>
+<li>Solved the problem of ripit.pl asking for input.  Fortunately, John
+discovered that it was an option built into the program before he spent hours
+trying to figure out how to write a working expect script.</li>
+<li> Finally got the remote working. It works with the included Creative
+Remote, but in theoryshould work with the other remotes. To use, run command
+irexec and then you can press start and xmms will start and the remote
+controls xmms. It is set up for xmms and I will set it up for the guide once
+the menus are all finished and running. If anyone wants to mess with it please
+tlak to me (Frankie) as there are multiple configuration files that might
+possibly have to be edited depending on what you want to do.</li>
+</ul></p>
+
+<!-- <p><b><u>GUI Menu Options - Current Status</u></b><br />
+(completed tasks have been struck out)<br />
+<ul>
+<li><s>Jump to Live TV (Main Menu)</s> - Set to tune to channel 16.</li>
+<li><b>Video</b>
+     <ul>
+     <li><u><s>Watch Live TV</s></u> - Same as above.</li>
+     <li><u>View Schedule</u> - Brings up program.py in separate window.
+     May want to kill menu window first.</li>
+     <li><u>Select Recording</u> - Need to create interface similar to
+     program guide/program guide search.</li>
+     <li><u>Make Recording</u> - Will be set to record DVD, but couldn't get
+     that script to work.</li>
+     <li><b>Note: need to add an option to play DVD!</b></li>
+     </ul></li>
+<li><b>Audio</b>
+     <ul>
+     <li><u>Play CD</u> - Downloaded dcd, a command line player.  But do
+     we want a GUI player (XMMS, etc.)?</li>
+     <li><s><u>Broadcast Radio</u></s> - Default is U93.  Do we want a
+     screen that asks the user for a station to tune to?</li>
+     <li><u>Internet Radio</u> - Hasn't been worked on yet at any level.</li>
+     <li><u>Select Recording</u> - Same status as in Video.
+     <li><s><u>Make Recording</u></s> - Do we want a screen that gives
+     the user the status of the program running?</li>
+     </ul></li>
+<li><b>Pictures</b>
+     <ul>
+     <li><u>Browse</u> - Almost done; mostly just need to link from menus.</li>
+     <li><u>Add</u> - Ditto.</li>
+     </ul></li>
+<li><b>Setup</b></li>
+</ul></p> -->
+          
+<p><b>04.14.2003</b></p>
+<ul>
+<li>Added Tune TV Now to program guide of master control program (MCP).</li>
+<li>Worked on "modules" for MCP.</li>
+<li>Added a feature to delete all recordings older than 2 weeks, unless they
+have a "keep" tag.</li>
+<li>Implemented radio programming.</li>
+</ul></p>
+
+<p><b>04.22.2003</b></p>
+<ul>
+<li>Added DVD playing ability to menu.  Updated Video menu from
+"Watch Live TV" to "Watch DVD".</li>
+<li>Incorporated quality settings into CD Ripping, and added a
+module for it.</li>
+<li>Added module for broadcast radio.</li>
+</ul></p>
+
+<p><b>04.30.2003</b></p>
+<ul>
+<li>Finally began work on DVD module.  Stupid Computer Graphics project.</li>
+<li>Changed "Video Record Quality" in the setup screen to "DVD Title ID,"
+since that is the name of an actual variable used by the DVD ripper.</li>
+<li>Fixed some font size issues.  Still can't get it just right.</li>
+</ul></p>
+
+<p><b>05.01.2003</b></p>
+<ul>
+<li>Modified record_tv_init to "record now" if current time is between
+start time and end time.</li>
+<li>Implemented similar function in cancel_rec.pl, calling a "killall
+mencoder" to stop recording.</li>
+<li>Changed the setup of the "Rip CD" and "Rip DVD" screens.  Now they are
+prompts with two choices: "OK" to start ripping and "Change" to go to the
+setup screen. (and of course backspace to go back).</li>
+<li>Ran some tests to make sure everything was working OK.  Not too bad.</li>
+<li>Modified program guide thusly: on the program description screen
+(the one that details a single program), if the program is on currently,
+"Set to Record" changes to "Record Now!" and "Delete Scheduled Recording"
+changes to "Stop Recording."</li>
+</ul></p>
+
+</ul>
+
+</body></html>
+
+
+
+
+

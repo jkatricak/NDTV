@@ -1,0 +1,6 @@
+#!/bin/sh
+FILENAME=kanka.avi
+/ndtv/scripts/ndtv_tv_rec 16 10 $FILENAME&
+PID=$!
+tail --retry -f $FILENAME | mplayer -fs -vo xv -ao sdl -cache 2048 -
+killall -INT $PID

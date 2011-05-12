@@ -1,0 +1,120 @@
+mysql> show tables;
++----------------+
+| Tables_in_ndtv |
++----------------+
+| audio          |
+| channel        |
+| pictures       |
+| programme      |
+| recordedtv     |
+| seasonpass     |
+| torecord       |
+| video          |
++----------------+
+
+mysql> describe audio;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| filename  | varchar(255) |      | PRI |         |       |
+| artist    | varchar(50)  | YES  |     | NULL    |       |
+| album     | varchar(50)  | YES  |     | NULL    |       |
+| year      | int(11)      | YES  |     | NULL    |       |
+| genre     | varchar(25)  | YES  |     | NULL    |       |
+| track     | int(11)      | YES  |     | NULL    |       |
+| bitrate   | int(11)      | YES  |     | NULL    |       |
+| frequency | int(11)      | YES  |     | NULL    |       |
+| length    | varchar(6)   | YES  |     | NULL    |       |
+| comment   | varchar(100) | YES  |     | NULL    |       |
+| format    | varchar(4)   | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+
+mysql> describe channel;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| chanid   | varchar(20) |      | PRI |         |       |
+| logofile | varchar(20) | YES  |     | NULL    |       |
+| channame | varchar(20) | YES  |     | NULL    |       |
+| channum  | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+mysql> describe pictures;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| description | varchar(255) | YES  |     | NULL    |       |
+| dimensions  | varchar(9)   | YES  |     | NULL    |       |
+| filename    | varchar(150) |      | PRI |         |       |
+| format      | varchar(100) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+
+mysql> describe programme;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| title       | varchar(128)  | YES  |     | NULL    |       |
+| subtitle    | varchar(100)  | YES  |     | NULL    |       |
+| description | text          | YES  |     | NULL    |       |
+| starttime   | timestamp(14) | YES  | PRI | NULL    |       |
+| endtime     | timestamp(14) | YES  |     | NULL    |       |
+| channel     | varchar(100)  |      | PRI |         |       |
+| category    | varchar(100)  | YES  |     | NULL    |       |
+| shours      | int(11)       | YES  |     | 0       |       |
+| sminutes    | int(11)       | YES  |     | 0       |       |
+| ehours      | int(11)       | YES  |     | 0       |       |
+| eminutes    | int(11)       | YES  |     | 0       |       |
++-------------+---------------+------+-----+---------+-------+
+
+mysql> describe recordedtv;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| title       | varchar(128) | YES  |     | NULL    |       |
+| subtitle    | varchar(100) | YES  |     | NULL    |       |
+| description | text         | YES  |     | NULL    |       |
+| starttime   | varchar(14)  |      | PRI |         |       |
+| endtime     | varchar(14)  |      |     |         |       |
+| channel     | varchar(100) |      | PRI |         |       |
+| category    | varchar(100) | YES  |     | NULL    |       |
+| filename    | varchar(150) |      |     |         |       |
+| keep        | int(11)      |      |     |         |       |
++-------------+--------------+------+-----+---------+-------+
+
+mysql> describe seasonpass;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| title     | varchar(128) |      |     |         |       |
+| channel   | varchar(100) |      |     |         |       |
+| timeofday | varchar(6)   |      |     |         |       |
++-----------+--------------+------+-----+---------+-------+
+
+mysql> describe torecord;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| title       | varchar(128) | YES  |     | NULL    |       |
+| subtitle    | varchar(100) | YES  |     | NULL    |       |
+| description | text         | YES  |     | NULL    |       |
+| starttime   | varchar(14)  |      | PRI | 0       |       |
+| endtime     | varchar(14)  |      |     |         |       |
+| channel     | varchar(100) |      | PRI |         |       |
+| category    | varchar(100) | YES  |     | NULL    |       |
+| atjobno     | int(5)       | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+
+mysql> describe video;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| title       | varchar(75)  | YES  |     | NULL    |       |
+| year        | int(11)      | YES  |     | NULL    |       |
+| description | text         | YES  |     | NULL    |       |
+| genre       | varchar(25)  | YES  |     | NULL    |       |
+| rating      | varchar(4)   | YES  |     | NULL    |       |
+| length      | varchar(6)   | YES  |     | NULL    |       |
+| filename    | varchar(150) |      | PRI |         |       |
+| format      | varchar(25)  | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+

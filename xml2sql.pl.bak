@@ -1,0 +1,54 @@
+#!/usr/bin/perl -w
+
+use strict;
+use DBI;
+use XML::Twig;
+
+my $file = 'na_sort.xml';
+my $twig = XML::Twig->new();
+my $str;
+my $dbh = DBI->connect ("DBI:mysql:ndtv",
+                           "ndtv", "mysql",
+                           { RaiseError => 1, PrintError => 0});
+$twig->parsefile($file);
+
+my $root = $twig->root;
+
+foreach my $show ($root->children('programme')){
+   # print $show->first_child_text('title');
+   # print ' (' . $show->att('channel') . ') ';
+   #print $show->first_child_text('desc');
+   # print "\n";
+    
+    $str = "title='" . &dequote($show->first_child_text('title')) . "'";
+    $str .= ",starttime='" . $show->att('start') . "'";
+    $str .= ",endtime='" . $show->att('stop') . "'";
+    $str .= ",category='" . &dequote($show->first_child_text('category')) . "'";
+    $str .= ",description='" . &dequote($show->first_child_text('desc')) . "'";
+    $str .= ",subtitle='" . &dequote($show->first_child_text('sub-title')) . "'";
+
+
+    $str .= ",channel='" . $show->att('channel') . "'";
+
+
+
+    #print $str;
+    
+    $dbh->do ("INSERT INTO programme SET $str");
+
+
+
+
+}
+
+
+$dbh->disconnect ();
+
+
+sub dequote {
+    my ($samp) = @_;
+   # print "Samp $samp\n";
+    $samp =~ s/'/''/g;
+#print "Samp $samp\n";
+    return $samp
+}

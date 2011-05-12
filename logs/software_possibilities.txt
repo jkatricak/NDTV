@@ -1,0 +1,132 @@
+Programs for Hardware interface:
+  -recording
+  -playing
+  -converting
+
+Recommended
+-----------------------------------------------------------------
+
+
+Audio/Video player (used by MythTV, good command line interface with many features and good codecs):
+Mplayer
+http://www.mplayerhq.hu/homepage/
+ Supported input formats
+* (S)VCD (Video CD) directly from CD-ROM or from CDRwin's .bin image file
+* DVD, directly from your DVD disk, using libmpdvdkit (included) or libdvdread/libdvdcss (optional) for chapter support and decryption
+* MPEG 1/2 System Stream (PS/PES/VOB) and Elementary Stream (ES) file formats
+* RIFF AVI file format
+* ASF/WMV/WMA format
+* QT/MOV/MP4 format
+* RealAudio/RealVideo format
+* OGG/OGM format
+* VIVO v1,v2 format
+* FLI format
+* NuppelVideo format
+* yuv4mpeg format
+* FILM (.cpk) format
+* RoQ format
+* supports reading from file, fifo/stdin, (S)VCD/DVD or network via HTTP/MMS/MMST/RTP
+
+
+Encoder:
+Mencoder
+part of Mplayer suite
+
+
+
+Others
+------------------------------------------------------------------
+
+Versitile player (unfortunately GUI)
+XMMS
+htpp://www.xmms.org
+Many Plugins.  Can record internet radio, manage playlists, etc.
+RedHat 8.0 may have problems playing mp3's according to XMMS website.
+
+
+
+Recorder:
+VCR
+http://www.stack.nl/~brama/vcr/
+VCR is a program which enables you to record a program using a video grabber card that's 
+supported by the video4linux drivers. It doesn't require a graphical environment, and you 
+can use all popupular windows codecs (like DivX, Indeo Video 5, etc) because VCR is built 
+around the avifile library. Now, you can finally record your favourite program from a remote 
+place, because Murphy's law dictates that you remember to record it when you're as far away 
+from your home as possible...
+
+
+
+Converter:
+av_convert 
+http://merkur.2y.net/av_convert/
+
+The main part of av_convert is a C++ API for accessing audio/video files 
+(AVI, Quicktime, YUV4MPEG stream, WAV, etc.). This functionality is provided 
+by a library and a set of plugin modules for I/O backends and audio/video codecs. 
+Using this library, "av_convert" can convert between these file formats and provide 
+basic editing functions, such as cutting parts of different video sources to one destination. 
+The included program "av_rec" can record real-time video from a v4l-video-source with A/V sync.
+
+
+
+DVD Manipulation
+dvd_disc
+http://linuxtv.org/dvd/
+
+dvd_disc is a Linux kernel module that provides unified access to a DVD Video by a 
+DVD Navigator. It utilises a common interface for dvd_file and dvd_udf, both of which are 
+included in the package. dvd_udf accesses a DVD Video via the raw drive device and decodes 
+the UDF file structure on the disc. dvd_file accesses a DVD Video via its file structure, 
+if mounted on the filesystem of the host. This package also includes the "regionset" utility 
+to change the region code on RPC II DVD ROM drives, and the "dvdbackup" tool to make backup 
+copies of DVD ROMs as image files.
+
+
+
+eXtended linux video
+xlv.sorceforge.net
+
+XLV is a middle-level interface for Audio/Video (and generic multimedia format) playing,
+recording, and managing. The idea is that what you can do automatically (with one call) 
+can also be done manually (all the decoding process can be extracted from the automate). 
+XLV comes with a full bunch of plugins, including Vorbis, MPEG audio decoding, MPEG 1/2 
+video decoding, a Win32 codec interface, AVI decoder, Wave decoder, Quicktime decoder, 
+MPEG/VOB (DVD file) decoder, and more functionalities like auto-format conversion, etc.
+
+
+
+CD extraction (to wav?):
+cdparanoia
+http://www.xiph.org/paranoia/
+
+cdparanoia reads audio from the CDROM directly as data, with no analog step between, 
+and writes the data to a file or pipe in WAV, AIFC or raw 16 bit linear PCM. Cdparanoia 
+will read correct, rock-solid audio data from inexpensive drives prone to misalignment, 
+frame jitter and loss of streaming during atomic reads. cdparanoia will also read and repair 
+data from CDs that have been damaged in some way.
+
+
+
+CD extraction (to mp3):
+makemp3.py
+ftp://heron.ucsd.edu/pub/Linux/makemp3-1.3.tar.gz (tarfile)
+
+MakeMP3.py is a Python script for ripping a CD into a set of named MP3 files. It finds 
+your CD's album and track names from an online CDDB database, then coodinates both the 
+ripping, naming, and encoding of the music tracks. It uses the ultra-fast gogo MP3 encoder.
+
+
+
+kmediagrab (Video manipulation)
+http://sourceforge.net/projects/kmediagrab/
+
+KMediagrab is a media grabber and encoder built on top of mplayer/mencoder. It can grab 
+and encode a DVD at the same time (e.g., creating a divx or a videocd file for instance), 
+record a movie or your favourite TV program from your TV-card, or translate a video file 
+from one format to another (e.g., create a realplayer file from a .wmv one).
+
+
+
+
+
